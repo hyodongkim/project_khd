@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <%-include('headpart.ejs')%>
+    <body>
+        <ul style="list-style:none;">
+            <% for(let board of boards) { %>
+            <li>
+                <a href=<%=`/board/${board._id}?page=${page}${keyword ? `&keyword=${keyword}` : ""}`%>>
+                <% if(board.mediapath.length > 0) { %>
+                    <img style="height:50px;" src=<%=board.mediapath.split(splittoken)[0]%>>
+                <% } else { %>
+                    <span><%=board.author%></span>
+                    <span><%=board.title%></span>
+                    <span><%=dateformat(board.writedate)%></span>
+                <% } %>
+                </a>
+            </li>
+            <% } %>
+        </ul>
+        <% if(parseInt(page) >= 1 && parseInt(page) <= parseInt(last)) { %>
+        <ul style="list-style:none;">
+            <% if(page != 1) { %>
+            <li style="display:inline-block;">
+                <a href=<%=`/boards?page=1`%>>
+                    <div style="display:inline-block;width:25px;">≪</div>
+                </a>
+            </li>
+            <li style="display:inline-block;">
+                <a href=<%=`/boards?page=${page-1}${keyword ? `&keyword=${keyword}` : ""}`%>>
+                    <div style="display:inline-block;width:25px;">＜</div>
+                </a>
+            </li>
+            <% } %>
+            <% for(let i = begin; i <= end; i += 1) { %>
+            <li style="display:inline-block;">
+                <a href=<%=`/boards?page=${i}${keyword ? `&keyword=${keyword}` : ""}`%>>
+                    <div style="display:inline-block;width:25px;"><%=i%></div>
+                </a>
+            </li>
+            <% } %>
+            <% if(page != last) { %>
+            <li style="display:inline-block;">
+                <a href=<%=`/boards?page=${parseInt(page)+1}${keyword ? `&keyword=${keyword}` : ""}`%>>
+                    <div style="display:inline-block;width:25px;">＞</div>
+                </a>
+            </li>
+            <li style="display:inline-block;">
+                <a href=<%=`/boards?page=${last}${keyword ? `&keyword=${keyword}` : ""}`%>>
+                    <div style="display:inline-block;width:25px;">≫</div>
+                </a>
+            </li>
+            <% } %>
+        </ul>
+        <% } %>
+        <form action="/boards" method="get">
+            <input type="text" name="keyword">
+            <button type="submit">검색</button>
+        </form>
+        <%-include('formbutton.ejs',{
+            target:'/boardwrite',
+            method:'get',
+            text:'글쓰기'
+        })%>
+    </body>
+</html>

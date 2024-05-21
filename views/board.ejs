@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <%-include('headpart.ejs')%>
+    <body>
+    <%=board.title%>
+    <br>
+    <% if(board.type === 'none') { %>
+        <%=board.inner%>
+    <% } else if(board.type === 'images') { %>
+        <% for(let img of board.mediapath.split(splittoken)) { %>
+            <img src=<%=`\\${img}`%>>
+            <br>
+        <% } %>
+        <br>
+        <%=board.inner%>
+    <% } else { %>
+        <video src=<%=`\\${board.mediapath}`%>>
+        <br>
+        <%=board.inner%>
+    <% } %>
+    <br>
+    <%-replys%>
+    <br>
+    <form action=<%=`/board/${id}?page=${page}${keyword ? `&keyword=${keyword}` : ""}`%> method="post">
+        <input type="text" name="reply">
+        <button type="submit">등록</button>
+    </form>
+    <br>
+    <a href=<%=`/boards?page=${page}${keyword ? `&keyword=${keyword}` : ""}`%>>목록</a>
+    </body>
+</html>
