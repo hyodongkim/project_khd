@@ -33,23 +33,13 @@ export default function App() {
     const body = await response.json();
     return body;
   }
-
-  // useEffect(() => {
-  //   fetch("/api/customers", {
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Accept: "application/json",
-  //     },
-  //   })
-  //     .then((response) => response.json())
-  //     .catch((error) => console.error("fetch error! ::: ", error));
-  // }, []);
   return (
     <div>
       {state
         ? state.map((c) => {
             return (
               <Customer
+                key={c.id}
                 id={c.id}
                 name={c.name}
                 birthday={c.birthday}
