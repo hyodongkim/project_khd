@@ -1,54 +1,17 @@
-import { useEffect, useState } from "react";
-import Customer from "./components/Customer.js";
-import axios from "axios";
+import TestList from "./TestList";
+import TestInsert from "./TestInsert";
+import { Route, Routes } from "react-router-dom";
 
-export default function App() {
-  const [state, setState] = useState([]);
-
-  const sendRequest = async () => {
-    const response = await axios.get("http://localhost:5000/api/customers");
-    console.log(response.data);
-    setState(response.data);
-  };
-
-  useEffect(() => {
-    callApi()
-      .then((res) => setState({ customers: res }))
-      .catch((err) => console.log(err));
-    sendRequest();
-  }, []);
-
-  async function callApi() {
-    const response = await fetch("/api/customers", {
-      method: "GET",
-      mode: "cors",
-      cache: "no-cache",
-      credentials: "same-origin",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      redirect: "follow",
-      referrerPolicy: "no-referrer",
-    });
-    const body = await response.json();
-    return body;
-  }
+function App() {
   return (
-    <div>
-      {state
-        ? state.map((c) => {
-            return (
-              <Customer
-                key={c.id}
-                id={c.id}
-                name={c.name}
-                birthday={c.birthday}
-                gender={c.gender}
-                job={c.job}
-              />
-            );
-          })
-        : ""}
-    </div>
+    <>
+      <Routes>
+        <Route path="/" element={<>기모링</>} />
+        <Route path="/test_list" element={<TestList />} />
+        <Route path="/test_insert" element={<TestInsert />} />
+      </Routes>
+    </>
   );
 }
+
+export default App;

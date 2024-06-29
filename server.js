@@ -27,11 +27,39 @@ connection.connect();
 
 app.use(express.static(path.join(__dirname, "client/src")));
 
-app.get("/api/customers", function (req, res) {
+app.get("/test_list", function (req, res) {
   // res.sendFile(path.join(__dirname + "/data.json"));
   connection.query("SELECT * FROM test", (err, rows, field) => {
     res.send(rows);
   });
+});
+
+app.get("/test_insert", function (req, res) {
+  connection.query("SELECT * From test", (err, rows, field) => {
+    res.send(rows);
+    console.log("get성공");
+  });
+});
+
+//get 방식은 req.query.parameter_name
+//post 방식은 req.body.parameter_name
+
+app.post("/test_insert", function (req, res) {
+  // let id = req.body.id;
+  let name = req.body.name;
+  let birthday = req.body.birthday;
+  let gender = req.body.gender;
+  let job = req.body.job;
+  let values = [name, birthday, gender, job];
+
+  connection.query(
+    "INSERT INTO test(name, birthday, gender, job) Values(?,?,?,?)",
+    values,
+    function (err, rows, fields) {
+      if (err) console.log(err);
+      console.log(rows);
+    }
+  );
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
