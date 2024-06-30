@@ -62,4 +62,22 @@ app.post("/test_insert", function (req, res) {
   );
 });
 
+app.post("/test_update", function (req, res) {
+  let id = req.body.id;
+  let name = req.body.name;
+  let birthday = req.body.birthday;
+  let gender = req.body.gender;
+  let job = req.body.job;
+  let values = [name, birthday, gender, job, id];
+
+  connection.query(
+    "UPDATE test SET name=?, birthday=?, gender=?, job=? WHERE id=?",
+    values,
+    function (err, rows, fields) {
+      if (err) console.log(err);
+      console.log(rows);
+    }
+  );
+});
+
 app.listen(port, () => console.log(`Listening on port ${port}`));

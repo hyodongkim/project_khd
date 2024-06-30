@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import Customer from "./components/Customer.js";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
-export default function TestInsert() {
+export default function TestUpdate(props) {
   const [state, setState] = useState([]);
   const [list, setList] = useState({
     id: 0,
@@ -12,11 +13,13 @@ export default function TestInsert() {
     job: "",
   });
 
-  const [id, setId] = useState(0);
-  // const [name, setName] = useState("");
-  // const [birthday, setBirthday] = useState(0);
-  // const [gender, setGender] = useState("");
-  // const [job, setJob] = useState("");
+  // const [id, setId] = useState(0);
+  const [name, setName] = useState("");
+  const [birthday, setBirthday] = useState("");
+  const [gender, setGender] = useState("");
+  const [job, setJob] = useState("");
+
+  const { id } = useParams();
 
   const sendRequest = async () => {
     const response = await axios.get("http://localhost:5000/test_list");
@@ -49,8 +52,8 @@ export default function TestInsert() {
 
   /////////////////////////////////////////////////////////////////////////////////////////////////
 
-  async function addCustomer() {
-    const url = "http://localhost:5000/test_insert";
+  async function updateCustomer() {
+    const url = "http://localhost:5000/test_update";
     const config = {
       method: "POST",
       mode: "cors",
@@ -63,18 +66,18 @@ export default function TestInsert() {
       referrerPolicy: "no-referrer",
     };
     const formData = new FormData();
-    formData.append("id", list.id);
-    formData.append("name", list.name);
-    formData.append("birthday", list.birthday);
-    formData.append("gender", list.gender);
-    formData.append("job", list.job);
+    formData.append("id", id);
+    formData.append("name", name);
+    formData.append("birthday", birthday);
+    formData.append("gender", gender);
+    formData.append("job", job);
 
     console.log("테스트:" + id);
     return axios.post(url, formData, config);
   }
 
   function handleFormSubmit() {
-    addCustomer()
+    updateCustomer()
       .then((res) =>
         setList({
           id: list.id,
@@ -87,74 +90,63 @@ export default function TestInsert() {
       .catch((err) => console.log(err));
   }
 
-  // function handleIdChange(e) {
-  //   setList({
-  //     ...list,
-  //     [e.target.name]: e.target.value,
-  //   });
-  // }
-
-  function handleNameChange(e) {
+  function handleIdChange(e) {
     setList({
       ...list,
       [e.target.name]: e.target.value,
     });
+  }
+
+  function handleNameChange(e) {
+    setName(e.target.value);
   }
 
   function handleBirthdayChange(e) {
-    setList({
-      ...list,
-      [e.target.name]: e.target.value,
-    });
+    setBirthday(e.target.value);
   }
 
   function handleGenderChange(e) {
-    setList({
-      ...list,
-      [e.target.name]: e.target.value,
-    });
+    setGender(e.target.value);
   }
 
   function handleJobChange(e) {
-    setList({
-      ...list,
-      [e.target.name]: e.target.value,
-    });
+    setJob(e.target.value);
   }
 
   return (
     <>
       {state
-        ? state.map((c) => {
-            return (
-              <Customer
-                key={c.id}
-                id={c.id}
-                name={c.name}
-                birthday={c.birthday}
-                gender={c.gender}
-                job={c.job}
-              />
-            );
-          })
+        ? state
+            .filter((update) => update.id == id)
+            .map((c) => {
+              return (
+                <Customer
+                  key={c.id}
+                  id={c.id}
+                  name={c.name}
+                  birthday={c.birthday}
+                  gender={c.gender}
+                  job={c.job}
+                />
+              );
+            })
         : ""}
 
-      <br />
-
       <form onSubmit={handleFormSubmit}>
-        {/* <div>번호 :</div>
+        <div>번호 :</div>
         <input
           type="text"
           name="id"
-          value={list.id}
+          value={id}
           onChange={handleIdChange}
         ></input>
-        <br /> */}
+        <br />
+
         <div>이름 :</div>
         <input
           type="text"
           name="name"
-          value={list.name}
+          value={name}
           onChange={handleNameChange}
         ></input>
         <br />
@@ -162,7 +154,7 @@ export default function TestInsert() {
         <input
           type="text"
           name="birthday"
-          value={list.birthday}
+          value={birthday}
           onChange={handleBirthdayChange}
         ></input>
         <br />
@@ -170,7 +162,7 @@ export default function TestInsert() {
         <input
           type="text"
           name="gender"
-          value={list.gender}
+          value={gender}
           onChange={handleGenderChange}
         ></input>
         <br />
@@ -178,12 +170,14 @@ export default function TestInsert() {
         <input
           type="text"
           name="job"
-          value={list.job}
+          value={job}
           onChange={handleJobChange}
         ></input>
         <br />
-        <button type="submit">삽입</button>
+        <button type="submit">갱신</button>
       </form>
+
+      <br />
     </>
   );
 }
