@@ -61,7 +61,7 @@ app.post("/test_insert", function (req, res) {
     }
   );
 });
-
+// 절대로 :id 붙이지 말것 !!!!
 app.post("/test_update", function (req, res) {
   let id = req.body.id;
   let name = req.body.name;
@@ -76,6 +76,22 @@ app.post("/test_update", function (req, res) {
     function (err, rows, fields) {
       if (err) console.log(err);
       console.log(rows);
+    }
+  );
+});
+
+app.post("/test_delete", function (req, res) {
+  let id = req.body.id;
+
+  let values = [id];
+
+  connection.query(
+    "DELETE FROM test WHERE id=?",
+    values,
+    function (err, rows, fields) {
+      if (err) console.log(err);
+      console.log(rows);
+      console.log("삭제완료(서버)");
     }
   );
 });

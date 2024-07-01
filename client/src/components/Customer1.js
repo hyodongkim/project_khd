@@ -1,16 +1,15 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-export default function Customer(props) {
+export default function Customer1(props) {
   const navigate = useNavigate();
-  const { id } = useParams();
 
   return (
     <div
       onClick={() => {
-        navigate(`/test_update/${props.id}`, {
+        navigate(`/test_delete/${props.id}`, {
           state: {
-            id: id,
+            id: props.id,
             name: props.name,
             birthday: props.birthday,
             gender: props.gender,

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Customer from "./components/Customer.js";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 export default function TestUpdate(props) {
   const [state, setState] = useState([]);
@@ -20,6 +20,7 @@ export default function TestUpdate(props) {
   const [job, setJob] = useState("");
 
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const sendRequest = async () => {
     const response = await axios.get("http://localhost:5000/test_list");
@@ -176,6 +177,8 @@ export default function TestUpdate(props) {
         <br />
         <button type="submit">갱신</button>
       </form>
+
+      <button onClick={() => navigate(`/test_delete/${id}`)}>삭제</button>
 
       <br />
     </>
