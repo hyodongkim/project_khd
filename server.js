@@ -80,7 +80,14 @@ app.post("/test_update", function (req, res) {
   );
 });
 
-app.post("/test_delete", function (req, res) {
+app.get("/test_list", function (req, res) {
+  // res.sendFile(path.join(__dirname + "/data.json"));
+  connection.query("SELECT * FROM test", (err, rows, field) => {
+    res.send(rows);
+  });
+});
+
+app.post(`/test_delete/:id`, function (req, res) {
   let id = req.body.id;
 
   let values = [id];

@@ -17,7 +17,7 @@ export default function TestDelete(props) {
   const { id } = useParams();
 
   const sendRequest = async () => {
-    const response = await axios.get("http://localhost:5000/test_delete");
+    const response = await axios.get("http://localhost:5000/test_list");
     console.log(response.data);
     setState(response.data);
   };
@@ -30,7 +30,7 @@ export default function TestDelete(props) {
   }, []);
 
   async function callApi() {
-    const response = await fetch("/test_delete", {
+    const response = await fetch("/test_list", {
       method: "GET",
       mode: "cors",
       cache: "no-cache",
@@ -48,7 +48,7 @@ export default function TestDelete(props) {
   /////////////////////////////////////////////////////////////////////////////////////////////////
 
   async function deleteCustomer() {
-    const url = `http://localhost:5000/test_delete`;
+    const url = `http://localhost:5000/test_delete/${id}`;
     const config = {
       method: "POST",
       mode: "cors",
@@ -61,7 +61,7 @@ export default function TestDelete(props) {
       referrerPolicy: "no-referrer",
     };
     const formData = new FormData();
-    formData.append("id", list.id);
+    formData.append("id", id);
     // formData.append("name", list.name);
     // formData.append("birthday", list.birthday);
     // formData.append("gender", list.gender);
@@ -70,7 +70,7 @@ export default function TestDelete(props) {
     return axios.post(url, formData, config);
   }
   const sendRequest1 = async () => {
-    const response = await axios.post("/test_delete");
+    const response = await axios.post(`/test_delete/${id}`);
     console.log(response.data);
     setState(response.data);
   };
@@ -79,7 +79,7 @@ export default function TestDelete(props) {
     deleteCustomer()
       .then((res) =>
         setList({
-          id: id,
+          id: res.data,
         })
       )
       .catch((err) => console.log(err));

@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Customer1(props) {
   const navigate = useNavigate();
@@ -10,10 +10,6 @@ export default function Customer1(props) {
         navigate(`/test_delete/${props.id}`, {
           state: {
             id: props.id,
-            name: props.name,
-            birthday: props.birthday,
-            gender: props.gender,
-            job: props.job,
           },
         });
       }}
