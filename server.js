@@ -1,5 +1,6 @@
 const fs = require("fs");
 const express = require("express");
+const session = require("express-session");
 const app = express();
 const path = require("path");
 const port = process.env.PORT || 5000;
@@ -8,6 +9,7 @@ const cors = require("cors");
 const AWS = require("aws-sdk");
 const dotenv = require("dotenv");
 const mysql = require("mysql2");
+
 dotenv.config();
 
 app.use(cors());
@@ -22,6 +24,17 @@ const connection = mysql.createConnection({
   port: process.env.PORT,
   database: process.env.DATABASE,
 });
+
+app.use(
+  session({
+    secret: "secret-key",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 60 * 60 * 1000,
+    },
+  })
+);
 
 connection.connect();
 
@@ -101,6 +114,54 @@ app.post(`/test_delete/:id`, function (req, res) {
       console.log("삭제완료(서버)");
     }
   );
+});
+
+/////////////////////////////////////////////////////////////////// 위에는 CRUD테스트, 아래는 로그인테스트
+
+app.get("/test_authCheck", (req, res) => {
+  const sendData = { isLogin: "" };
+  if (req.session.is_logined) {
+    sendData.isLogin = "True";
+  } else {
+    sendData.isLogin = "False";
+  }
+  res.send(sendData);
+});
+
+app.get("/test_logout", function (req, res) {
+  req.session.destroy(function (err) {
+    res.redirect("/");
+  });
+});
+
+app.post("/test_login", (req, res) => {});
+
+app.post("/test_signin", (req, res) => {
+  let username = req.body.username;
+  let password = req.body.password;
+
+  let password2 = req.body.password2;
+
+  let values = [username, password];
+
+  console.log(username);
+  console.log(password);
+  console.log(password2);
+
+  if (password == password2) {
+    connection.query(
+      "Insert into testLogin(username, password) values(?,?)",
+      values,
+      function (err, rows, fields) {
+        if (err) {
+          console.log(err);
+          console.log(rows);
+        }
+      }
+    );
+  } else {
+    console.log("비번 불일치");
+  }
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
