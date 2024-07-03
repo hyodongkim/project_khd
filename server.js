@@ -128,13 +128,30 @@ app.get("/test_authCheck", (req, res) => {
   res.send(sendData);
 });
 
-app.get("/test_logout", function (req, res) {
-  req.session.destroy(function (err) {
-    res.redirect("/");
+// app.get("/test_logout", function (req, res) {
+//   req.session.destroy(function (err) {
+//     res.redirect("/");
+//   });
+// });
+
+app.post("/test_login", (req, res) => {
+  let id = req.body.id;
+  let pw = req.body.pw;
+
+  const sqlQuery =
+    "select count(*) as cnt from testLogin where username =? and password =?";
+  connection.query(sqlQuery, [id, pw], function (err, rows, fields) {
+    console.log(err);
+    console.log(rows);
+    console.log(rows[0].cnt);
+    console.log(req.session.id);
+    if (rows[0].cnt == 1) {
+      console.log("성공");
+    } else {
+      console.log("실패");
+    }
   });
 });
-
-app.post("/test_login", (req, res) => {});
 
 app.post("/test_signin", (req, res) => {
   let username = req.body.username;
