@@ -128,12 +128,6 @@ app.get("/test_authCheck", (req, res) => {
   res.send(sendData);
 });
 
-// app.get("/test_logout", function (req, res) {
-//   req.session.destroy(function (err) {
-//     res.redirect("/");
-//   });
-// });
-
 app.post("/test_login", (req, res) => {
   let id = req.body.id;
   let pw = req.body.pw;

@@ -50,6 +50,8 @@ export default function TestList() {
             );
           })
         : ""}
+
+      <div>{window.localStorage.getItem("id")}</div>
     </div>
   );
 }
