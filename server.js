@@ -1,6 +1,7 @@
 const fs = require("fs");
 const express = require("express");
 const session = require("express-session");
+const router = express.Router();
 const app = express();
 const path = require("path");
 const port = process.env.PORT || 5000;
@@ -118,17 +119,8 @@ app.post(`/test_delete/:id`, function (req, res) {
 
 /////////////////////////////////////////////////////////////////// 위에는 CRUD테스트, 아래는 로그인테스트
 
-app.get("/test_authCheck", (req, res) => {
-  const sendData = { isLogin: "" };
-  if (req.session.is_logined) {
-    sendData.isLogin = "True";
-  } else {
-    sendData.isLogin = "False";
-  }
-  res.send(sendData);
-});
-
 app.post("/test_login", (req, res) => {
+  let sendData = [];
   let id = req.body.id;
   let pw = req.body.pw;
 
@@ -139,10 +131,17 @@ app.post("/test_login", (req, res) => {
     console.log(rows);
     console.log(rows[0].cnt);
     console.log(req.session.id);
-    if (rows[0].cnt == 1) {
-      console.log("성공");
+    if (rows[0].cnt != 1) {
+      console.log("실패당");
+      sendData.push({ isLogin: "False" });
+      console.log(sendData);
+      return res.status(200).send(sendData);
     } else {
-      console.log("실패");
+      console.log("성공이당");
+      sendData.push({ isLogin: "True" });
+      console.log(sendData);
+      return res.status(200).send(sendData);
+      // return res.send(sendData[0].isLogin);
     }
   });
 });
