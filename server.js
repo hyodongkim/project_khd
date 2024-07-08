@@ -158,20 +158,45 @@ app.post("/test_signin", (req, res) => {
   console.log(password);
   console.log(password2);
 
-  if (password == password2) {
-    connection.query(
-      "Insert into testLogin(username, password) values(?,?)",
-      values,
-      function (err, rows, fields) {
-        if (err) {
-          console.log(err);
-          console.log(rows);
-        }
+  const sqlQuery =
+    "select count(*) as cnt from testLogin where username =? and password =?";
+  connection.query(
+    sqlQuery,
+    [username, password],
+    function (err, rows, fields) {
+      if (username == null || username == "undefined" || username == "") {
+        console.log("아이디 입력을 해주세요");
+      } else if (
+        password == null ||
+        password == "undefined" ||
+        password == ""
+      ) {
+        console.log("비밀번호 입력을 해주세요");
+      } else if (
+        password2 == null ||
+        password2 == "undefined" ||
+        password2 == ""
+      ) {
+        console.log("재확인 비밀번호 입력을 해주세요");
+      } else if (password != password2) {
+        console.log("비밀번호와 재확인 비밀번호가 일치하지 않습니다");
+      } else if (rows[0].cnt >= 1) {
+        console.log(rows[0].cnt);
+        console.log("이미 존재하는 회원정보입니다.");
+      } else {
+        connection.query(
+          "Insert into testLogin(username, password) values(?,?)",
+          values,
+          function (err, rows, fields) {
+            if (err) {
+              console.log(err);
+              console.log(rows);
+            }
+          }
+        );
       }
-    );
-  } else {
-    console.log("비번 불일치");
-  }
+    }
+  );
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
