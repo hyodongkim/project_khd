@@ -131,8 +131,19 @@ app.post("/test_login", (req, res) => {
     console.log(rows);
     console.log(rows[0].cnt);
     console.log(req.session.id);
-    if (rows[0].cnt != 1) {
-      console.log("실패당");
+    if (id == "" || id == "undefined" || id == null) {
+      console.log("아이디를 입력해주세요");
+      sendData.push({ isLogin: "False" });
+      console.log(sendData);
+      return res.status(200).send(sendData);
+    }
+    if (pw == "" || pw == "undefined" || pw == null) {
+      console.log("비밀번호를 입력해주세요");
+      sendData.push({ isLogin: "False" });
+      console.log(sendData);
+      return res.status(200).send(sendData);
+    } else if (rows[0].cnt < 1) {
+      console.log("가입된 계정이 아닙니다");
       sendData.push({ isLogin: "False" });
       console.log(sendData);
       return res.status(200).send(sendData);

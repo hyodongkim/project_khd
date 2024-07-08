@@ -41,7 +41,6 @@ export default function TestLogin(props) {
     })
       .then((res) => res.json())
       .then((json) => {
-        console.log(json[0].isLogin);
         if (json[0].isLogin === "True") {
           setMode("LOGIN");
         } else {
@@ -68,7 +67,6 @@ export default function TestLogin(props) {
     })
       .then((res) => res.json())
       .then((json) => {
-        console.log(json[0].isLogin);
         if (json[0].isLogin === "True") {
           setMode("LOGIN");
         } else {
@@ -109,10 +107,8 @@ export default function TestLogin(props) {
             type="submit"
             onClick={() => {
               if (mode != "LOGIN") {
-                console.log("/test_login 접근");
                 navigate("/test_login");
               } else {
-                console.log("/test_list 접근");
                 navigate("/test_list");
               }
             }}
