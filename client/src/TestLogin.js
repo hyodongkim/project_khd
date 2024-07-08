@@ -64,15 +64,15 @@ export default function TestLogin(props) {
         "cors-proxy-url": "http://localhost:5000/test_login",
       },
       body: JSON.stringify(userSession),
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        if (json[0].isLogin === "True") {
-          setMode("LOGIN");
-        } else {
-          setMode("WELCOME");
-        }
-      });
+    });
+    // .then((res) => res.json())
+    // .then((json) => {
+    //   if (json[0].isLogin === "True") {
+    //     setMode("LOGIN");
+    //   } else {
+    //     setMode("WELCOME");
+    //   }
+    // });
   };
 
   return (

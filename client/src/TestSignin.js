@@ -8,11 +8,50 @@ export default function TestSignin(props) {
   const [mode, setMode] = useState("");
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const userData = {
+      username: username,
+      password: password,
+      password2: password2,
+    };
+    fetch("http://localhost:5000/test_signin", {
+      method: "post",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        console.log(json[0].isSignin);
+        if (json[0].isSignin === "True") {
+          setMode("SIGNIN");
+        } else {
+          setMode("Sorry");
+        }
+      });
+  });
+
+  const submitValue = async (e) => {
+    const userData = {
+      username: username,
+      password: password,
+      password2: password2,
+    };
+    fetch("http://localhost:5000/test_signin", {
+      method: "post",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    });
+  };
+
   return (
     <>
       <h2>회원가입</h2>
 
-      <form>
+      <form onSubmit={submitValue}>
         <p>
           <input
             name="username"
@@ -51,27 +90,11 @@ export default function TestSignin(props) {
           <button
             type="submit"
             onClick={() => {
-              const userData = {
-                username: username,
-                password: password,
-                password2: password2,
-              };
-              fetch("http://localhost:5000/test_signin", {
-                method: "post",
-                headers: {
-                  "content-type": "application/json",
-                },
-                body: JSON.stringify(userData),
-              })
-                .then((res) => res.json())
-                .then((json) => {
-                  if (json.isSuccess === "True") {
-                    alert("회원가입이 완료되었습니다!");
-                    setMode("LOGIN");
-                  } else {
-                    alert(json.isSuccess);
-                  }
-                });
+              if (mode == "SIGNIN") {
+                navigate("/test_login");
+              } else {
+                navigate("/test_signin");
+              }
             }}
           >
             회원가입
@@ -80,7 +103,7 @@ export default function TestSignin(props) {
       </form>
 
       <p>
-        로그인화면으로 돌아가기{" "}
+        첫화면으로 돌아가기{" "}
         <button
           onClick={() => {
             navigate("/");

@@ -158,6 +158,7 @@ app.post("/test_login", (req, res) => {
 });
 
 app.post("/test_signin", (req, res) => {
+  let sendData = [];
   let username = req.body.username;
   let password = req.body.password;
 
@@ -177,34 +178,36 @@ app.post("/test_signin", (req, res) => {
     function (err, rows, fields) {
       if (username == null || username == "undefined" || username == "") {
         console.log("아이디 입력을 해주세요");
+        sendData.push({ isSignin: "False" });
+        res.send(sendData);
       } else if (
         password == null ||
         password == "undefined" ||
         password == ""
       ) {
         console.log("비밀번호 입력을 해주세요");
+        sendData.push({ isSignin: "False" });
+        res.send(sendData);
       } else if (
         password2 == null ||
         password2 == "undefined" ||
         password2 == ""
       ) {
         console.log("재확인 비밀번호 입력을 해주세요");
+        sendData.push({ isSignin: "False" });
+        res.send(sendData);
       } else if (password != password2) {
         console.log("비밀번호와 재확인 비밀번호가 일치하지 않습니다");
+        sendData.push({ isSignin: "False" });
+        res.send(sendData);
       } else if (rows[0].cnt >= 1) {
         console.log(rows[0].cnt);
         console.log("이미 존재하는 회원정보입니다.");
+        sendData.push({ isSignin: "False" });
+        res.send(sendData);
       } else {
-        connection.query(
-          "Insert into testLogin(username, password) values(?,?)",
-          values,
-          function (err, rows, fields) {
-            if (err) {
-              console.log(err);
-              console.log(rows);
-            }
-          }
-        );
+        sendData.push({ isSignin: "True" });
+        res.send(sendData);
       }
     }
   );
