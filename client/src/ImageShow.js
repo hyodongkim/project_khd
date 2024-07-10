@@ -1,26 +1,26 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 export default function ImageShow() {
-  const [imageShow, setImageShow] = useState(null);
+  const [imageShow, setImageShow] = useState("");
 
-  const loadImage = async () => {
-    const imageInfo = await getImage(2);
-    //처음 넣은 이미지의 아이디 1번
+  const { id } = useParams();
 
-    setImageShow(imageInfo.imageFile);
-  };
-
-  async function getImage(id) {
-    const res = await fetch(`http://localhost:5000/api/images/${id}`);
-    const body = await res.json();
-
-    return body;
+  function imageFunction() {
+    fetch(`http://localhost:5000/api/images/${id}`, {
+      method: "get",
+      headers: {
+        "content-type": "application/json",
+      },
+    }).then(function (res) {
+      setImageShow(res);
+    });
   }
 
   return (
     <>
-      <img src={imageShow} alt="이미지를 불러와야 합니다" />
-      <button onClick={loadImage}>불러오기</button>
+      <img src={imageFunction} alt="이미지를 불러와야 합니다" />
+      <button>불러오기</button>
     </>
   );
 }

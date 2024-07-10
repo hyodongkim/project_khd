@@ -11,6 +11,7 @@ const AWS = require("aws-sdk");
 const dotenv = require("dotenv");
 const mysql = require("mysql2");
 const multer = require("multer");
+const reactAppRewired = require("react-app-rewired");
 
 dotenv.config();
 
@@ -228,8 +229,6 @@ app.post("/test_signin", (req, res) => {
 
 ////////////////////////////////////////////////////////////////////////////////// 위에는 로그인과 회원가입, 아래는 이미지 업로드와 저장
 
-//파일에 접근하기 디렉토리 경로 설정 /image 경로를 통해 upload폴더에 접근 할수있다
-
 app.post("/api/images", upload.single("imageFile"), async (req, res) => {
   //	imageFile의 이름으로 들어온 파일을 req.file에 받아온다
   console.log(req.file);
@@ -240,25 +239,14 @@ app.post("/api/images", upload.single("imageFile"), async (req, res) => {
 
     newInfo["imageFile"] = filePath;
     //경로를 request의 json파일에 넣어 수정 해준다
-    console.log(newInfo["imageFile"]);
+    res.send(newInfo["imageFile"]);
   }
-  // const member = (newInfo);
-  // await member.save();
-  res.send(newInfo["imageFile"]);
 });
 
-// app.get("/api/images/:id", async (req, res) => {
-//   //아이디의 이미지를 찾음
-//   const { id } = req.params; //:id자리에 올 값을 받아온다
-//   const member = await connection.query({ where: { id } });
-//   res.send(member);
-// });
-
-app.get("/api/images/:id", (req, res) => {
+app.get("/api/images/:id", async (req, res) => {
   //아이디의 이미지를 찾음
   const { id } = req.params; //:id자리에 올 값을 받아온다
-  // const member = build({ where: { id } });
-  // res.send(member);
+  res.send(member);
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
