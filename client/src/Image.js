@@ -10,22 +10,24 @@ export default function Image() {
     async function fetchData() {
       const response = await fetch(`http://localhost:5000/api/images`, {
         method: "POST",
-      }).then((res) => {
-        setImageFile(res);
-        console.log(res);
-      });
-      fetchData();
+      })
+        .then((res) => res.json())
+        .then((json) => {
+          setImageFile(json);
+        });
     }
+    fetchData();
   }, []);
 
   async function imageUpload(formData) {
-    await fetch(`http://localhost:5000/api/images`, {
+    const response = await fetch(`http://localhost:5000/api/images`, {
       method: "POST",
       body: formData,
-    }).then((res) => {
-      setImageFile(res);
-      console.log(res);
-    });
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        setImageFile(json);
+      });
   }
 
   const handleChange = (e) => {
@@ -35,15 +37,13 @@ export default function Image() {
   const uploadImage = async () => {
     const formData = new FormData();
     formData.append("imageFile", imageFile);
-    //이미지 파일을 formData로 json 형태로 만들어 전송하자
     await imageUpload(formData);
-    //api
   };
 
   return (
     <>
       <form
-        action="/api/images"
+        action="/api/images/show"
         onSubmit={uploadImage}
         encType="multipart/form-data"
       >
@@ -55,11 +55,8 @@ export default function Image() {
           ref={inputRef}
           id="fileInput"
         />
-        <img src={imageFile} />
         <button type="submit">업로드</button>
       </form>
-
-      <button>불러오기</button>
     </>
   );
 }
