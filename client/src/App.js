@@ -20,7 +20,7 @@ function App() {
         <Route path="/test_login" element={<TestLogin />} />
         <Route path="/test_signin" element={<TestSignin />} />
         <Route path="/api/images" element={<Image />} />
-        <Route path="/api/images/:id" element={<ImageShow />} />
+        <Route path="/api/images/show" element={<ImageShow />} />
       </Routes>
     </>
   );

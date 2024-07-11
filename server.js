@@ -232,21 +232,30 @@ app.post("/test_signin", (req, res) => {
 app.post("/api/images", upload.single("imageFile"), async (req, res) => {
   //	imageFile의 이름으로 들어온 파일을 req.file에 받아온다
   console.log(req.file);
+  // console.log(req.file.filename);
   const newInfo = req.body;
   if (req.file) {
-    const filePath = "http://localhost:3000/image/" + req.file.originalname;
+    const filePath = "../upload/" + req.file.filename;
+    //파일이미지를 불러오기위한 경로+이미지파일 이름
+
+    //경로를 request의 json파일에 넣어 수정 해준다
+    console.log(filePath);
+    res.send(filePath);
+  }
+});
+
+app.post("/api/images/show", upload.single("imageFile"), async (req, res) => {
+  let id = req.body.id; //:id자리에 올 값을 받아온다
+  console.log(id);
+  const newInfo = req.body;
+  if (req.file) {
+    const filePath = "D:/project_khd/upload/" + req.file.filename;
     //파일이미지를 불러오기위한 경로+이미지파일 이름
 
     newInfo["imageFile"] = filePath;
     //경로를 request의 json파일에 넣어 수정 해준다
-    res.send(newInfo["imageFile"]);
+    res.send(id);
   }
-});
-
-app.get("/api/images/:id", async (req, res) => {
-  //아이디의 이미지를 찾음
-  const { id } = req.params; //:id자리에 올 값을 받아온다
-  res.send(member);
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

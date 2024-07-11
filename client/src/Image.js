@@ -1,13 +1,30 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function Image() {
   const inputRef = useRef();
   const [imageFile, setImageFile] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch(`http://localhost:5000/api/images`, {
+        method: "POST",
+      }).then((res) => {
+        setImageFile(res);
+        console.log(res);
+      });
+      fetchData();
+    }
+  }, []);
 
   async function imageUpload(formData) {
     await fetch(`http://localhost:5000/api/images`, {
       method: "POST",
       body: formData,
+    }).then((res) => {
+      setImageFile(res);
+      console.log(res);
     });
   }
 
@@ -25,16 +42,24 @@ export default function Image() {
 
   return (
     <>
-      <form onSubmit={uploadImage} encType="multipart/form-data">
+      <form
+        action="/api/images"
+        onSubmit={uploadImage}
+        encType="multipart/form-data"
+      >
         <input
+          name="id"
           type="file"
           accept="image/*"
           onChange={handleChange}
           ref={inputRef}
           id="fileInput"
         />
+        <img src={imageFile} />
         <button type="submit">업로드</button>
       </form>
+
+      <button>불러오기</button>
     </>
   );
 }
