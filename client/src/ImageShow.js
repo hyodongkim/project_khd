@@ -1,42 +1,42 @@
 import { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 
-export default function ImageShow(props) {
-  const [imageShow, setImageShow] = useState("");
+export default function ImageShow() {
+  const [imageShow, setImageShow] = useState([]);
+
+  const sendRequest = async () => {
+    const response = await axios.get("http://localhost:5000/api/images/show");
+    console.log(response.data);
+    setImageShow(response.data);
+  };
 
   useEffect(() => {
-    async function fetchData() {
-      await fetch("http://localhost:5000/api/images/show", {
-        method: "post",
-        headers: {
-          "content-type": "application/json",
-        },
-        // body: JSON.stringify(userData),
-      })
-        .then((res) => res.json())
-        .then((json) => {
-          setImageShow(json);
-        });
-    }
+    callApi()
+      .then((res) => setImageShow({ customers: res }))
+      .catch((err) => console.log(err));
+    sendRequest();
   }, []);
 
-  function fetchData() {
-    fetch("http://localhost:5000/api/images/show", {
-      method: "post",
+  async function callApi() {
+    const response = await fetch("/api/images/show", {
+      method: "GET",
+      mode: "cors",
+      cache: "no-cache",
+      credentials: "same-origin",
       headers: {
-        "content-type": "application/json",
+        "Content-Type": "text/plain",
       },
-      //sadfasdfasdf
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        setImageShow(json);
-      });
+      redirect: "follow",
+      referrerPolicy: "no-referrer",
+    });
+    const body = await response.json();
+    return body;
   }
 
   return (
     <>
-      <img src={fetchData} alt="이미지를 불러와야 합니다" />
+      <img src={imageShow} alt="이미지를 불러와야 합니다" />
       <button>불러오기</button>
     </>
   );

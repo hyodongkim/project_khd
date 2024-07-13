@@ -6,18 +6,18 @@ export default function Image() {
   const [imageFile, setImageFile] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    async function fetchData() {
-      const response = await fetch(`http://localhost:5000/api/images`, {
-        method: "POST",
-      })
-        .then((res) => res.json())
-        .then((json) => {
-          setImageFile(json);
-        });
-    }
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     const response = await fetch(`http://localhost:5000/api/images`, {
+  //       method: "POST",
+  //     })
+  //       .then((res) => res.json())
+  //       .then((json) => {
+  //         setImageFile(json);
+  //       });
+  //   }
+  //   fetchData();
+  // }, []);
 
   async function imageUpload(formData) {
     const response = await fetch(`http://localhost:5000/api/images`, {

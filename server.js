@@ -230,6 +230,8 @@ app.post("/test_signin", (req, res) => {
 ////////////////////////////////////////////////////////////////////////////////// 위에는 로그인과 회원가입, 아래는 이미지 업로드와 저장
 
 app.post("/api/images", upload.single("imageFile"), async (req, res) => {
+  console.log(req.file);
+
   if (req.file) {
     const file = req.file;
 
@@ -237,12 +239,11 @@ app.post("/api/images", upload.single("imageFile"), async (req, res) => {
   }
 });
 
-app.post("/api/images/show", async (req, res) => {
-  const newInfo = req.body;
-
-  const filePath = "D:/project_khd/upload/" + req.file.filename;
-
-  res.json(filePath);
+app.get("/api/images/show", upload.single("imageFile"), async (req, res) => {
+  console.log(req.body);
+  const filePath = "D:/project_khd/upload/" + req.body;
+  console.log(filePath);
+  res.send(filePath);
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
