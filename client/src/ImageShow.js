@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 export default function ImageShow() {
-  const [imageShow, setImageShow] = useState([]);
+  const [imageShow, setImageShow] = useState("");
 
   const sendRequest = async () => {
     const response = await axios.get("http://localhost:5000/api/images/show");
@@ -13,7 +13,7 @@ export default function ImageShow() {
 
   useEffect(() => {
     callApi()
-      .then((res) => setImageShow({ customers: res }))
+      .then((res) => setImageShow(res))
       .catch((err) => console.log(err));
     sendRequest();
   }, []);
@@ -30,7 +30,7 @@ export default function ImageShow() {
       redirect: "follow",
       referrerPolicy: "no-referrer",
     });
-    const body = await response.json();
+    const body = await response.text();
     return body;
   }
 
