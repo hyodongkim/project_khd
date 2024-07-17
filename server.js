@@ -231,22 +231,19 @@ app.post("/test_signin", (req, res) => {
 
 app.post("/api/images", upload.single("imageFile"), async (req, res) => {
   console.log("으아아아!");
-  console.log(req.body);
 
-  if (req.file) {
-    const file = req.file;
-
-    console.log(file);
-
-    res.send(file);
-  }
+  const file = req.body;
+  console.log(file);
+  res.send(file);
 });
 
-app.get("/api/images/show", upload.single("imageFile"), async (req, res) => {
+app.post("/api/images/show", upload.single("imageFile"), async (req, res) => {
   console.log("req!!");
-  // console.log(req.path);
-  const filePath = req.path;
-  res.send(filePath);
+  let filePath = req.body;
+  // filePath.push(req.body);
+  console.log("으쌰");
+  console.log(filePath.imageData);
+  res.send(filePath.imageData);
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
