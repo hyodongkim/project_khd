@@ -7,8 +7,10 @@ export default function Image() {
   const [imageFile, setImageFile] = useState(null);
 
   const handleChange = (e) => {
-    console.log(e.target.value);
-    const nextValue = e.target.value;
+    const formData = new FormData();
+    formData.append("file", e.target.files[0].name);
+    console.log(e.target.files[0].name);
+    const nextValue = e.target.files[0].name;
     setImageFile(nextValue);
   };
 
@@ -27,8 +29,8 @@ export default function Image() {
     })
       .then((res) => res.json())
       .then((json) => {
-        console.log(image);
-        navigate("/api/images/show", { state: image });
+        console.log(image.imageData);
+        navigate("/api/images/show", { state: image.imageData });
       });
 
     e.preventDefault();

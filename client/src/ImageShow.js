@@ -10,6 +10,7 @@ export default function ImageShow(props) {
   const sendRequest = async () => {
     const response = await axios.post("http://localhost:5000/api/images");
     setImageShow(response.data);
+    console.log(response.data);
   };
 
   useEffect(() => {
@@ -21,21 +22,23 @@ export default function ImageShow(props) {
 
   async function callApi() {
     const image = {
-      imageData: imageShow,
+      imageData: state,
     };
     await fetch("http://localhost:5000/api/images/show", {
       method: "post",
-      mode: "cors",
       cache: "no-cache",
       credentials: "same-origin",
       headers: {
         "Content-Type": "application/json",
+        "cors-proxy-url": "http://localhost:5000/api/images/show",
       },
       body: JSON.stringify(image),
-    }).then((res) => {
-      setImageShow(state.imageData);
-      console.log(state.imageData);
-    });
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        setImageShow(json.sendFile);
+        console.log(json.sendFile);
+      });
   }
 
   return (

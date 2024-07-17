@@ -239,11 +239,13 @@ app.post("/api/images", upload.single("imageFile"), async (req, res) => {
 
 app.post("/api/images/show", upload.single("imageFile"), async (req, res) => {
   console.log("req!!");
-  let filePath = req.body;
-  // filePath.push(req.body);
+  console.log(req.body);
+  let filePath = req.body.imageData;
+  let fileURL = `../../upload/` + filePath;
+  let file = { sendFile: fileURL };
   console.log("으쌰");
-  console.log(filePath.imageData);
-  res.send(filePath.imageData);
+  console.log(file);
+  res.send(file);
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
