@@ -4,8 +4,8 @@ import TestUpdate from "./TestUpdate";
 import TestDelete from "./TestDelete";
 import TestLogin from "./TestLogin";
 import TestSignin from "./TestSignin";
-import Image from "./Image";
-import ImageShow from "./ImageShow";
+import Text from "./Text";
+import TextSend from "./TextSend";
 import { Route, Routes } from "react-router-dom";
 
 function App() {
@@ -19,8 +19,8 @@ function App() {
         <Route path="/test_delete/:id" element={<TestDelete />} />
         <Route path="/test_login" element={<TestLogin />} />
         <Route path="/test_signin" element={<TestSignin />} />
-        <Route path="/api/images" element={<Image />} />
-        <Route path="/api/images/show" element={<ImageShow />} />
+        <Route path="/api/text" element={<Text />} />
+        <Route path="/api/text/send" element={<TextSend />} />
       </Routes>
     </>
   );

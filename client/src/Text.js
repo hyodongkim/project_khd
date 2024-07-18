@@ -1,16 +1,16 @@
 import { useRef, useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-export default function Image() {
+export default function Text() {
   const navigate = useNavigate();
 
-  const [imageFile, setImageFile] = useState(null);
+  const [imageFile, setImageFile] = useState([]);
 
   const handleChange = (e) => {
     const formData = new FormData();
-    formData.append("file", e.target.files[0].name);
-    console.log(e.target.files[0].name);
-    const nextValue = e.target.files[0].name;
+    formData.append("file", e.target.value);
+    console.log(e.target.value);
+    const nextValue = e.target.value;
     setImageFile(nextValue);
   };
 
@@ -19,18 +19,18 @@ export default function Image() {
       imageData: imageFile,
     };
 
-    fetch("http://localhost:5000/api/images", {
+    fetch("http://localhost:5000/api/text", {
       method: "post",
       headers: {
         "content-type": "application/json",
-        "cors-proxy-url": "http://localhost:5000/api/images",
+        "cors-proxy-url": "http://localhost:5000/api/text",
       },
       body: JSON.stringify(image),
     })
       .then((res) => res.json())
       .then((json) => {
         console.log(image.imageData);
-        navigate("/api/images/show", { state: image.imageData });
+        navigate("/api/text/send", { state: image.imageData });
       });
 
     e.preventDefault();
@@ -39,13 +39,7 @@ export default function Image() {
   return (
     <>
       <form onSubmit={uploadImage} encType="multipart/form-data">
-        <input
-          name="id"
-          type="file"
-          onChange={handleChange}
-          accept="image/*"
-          id="fileInput"
-        />
+        <input name="id" type="text" onChange={handleChange} />
         <button type="submit">업로드</button>
       </form>
     </>

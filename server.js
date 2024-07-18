@@ -229,7 +229,7 @@ app.post("/test_signin", (req, res) => {
 
 ////////////////////////////////////////////////////////////////////////////////// 위에는 로그인과 회원가입, 아래는 이미지 업로드와 저장
 
-app.post("/api/images", upload.single("imageFile"), async (req, res) => {
+app.post("/api/text", upload.single("imageFile"), async (req, res) => {
   console.log("으아아아!");
 
   const file = req.body;
@@ -237,11 +237,11 @@ app.post("/api/images", upload.single("imageFile"), async (req, res) => {
   res.send(file);
 });
 
-app.post("/api/images/show", upload.single("imageFile"), async (req, res) => {
+app.post("/api/text/send", upload.single("imageFile"), async (req, res) => {
   console.log("req!!");
   console.log(req.body);
   let filePath = req.body.imageData;
-  let fileURL = `../../upload/` + filePath;
+  let fileURL = filePath;
   let file = { sendFile: fileURL };
   console.log("으쌰");
   console.log(file);
