@@ -11,7 +11,6 @@ const AWS = require("aws-sdk");
 const dotenv = require("dotenv");
 const mysql = require("mysql2");
 const multer = require("multer");
-const reactAppRewired = require("react-app-rewired");
 
 dotenv.config();
 
@@ -227,9 +226,9 @@ app.post("/test_signin", (req, res) => {
   );
 });
 
-////////////////////////////////////////////////////////////////////////////////// 위에는 로그인과 회원가입, 아래는 이미지 업로드와 저장
+////////////////////////////////////////////////////////////////////////////////// 위에는 로그인과 회원가입, 아래는 url간의 데이터 전송
 
-app.post("/api/text", upload.single("imageFile"), async (req, res) => {
+app.post("/api/text", async (req, res) => {
   console.log("으아아아!");
 
   const file = req.body;
@@ -237,15 +236,17 @@ app.post("/api/text", upload.single("imageFile"), async (req, res) => {
   res.send(file);
 });
 
-app.post("/api/text/send", upload.single("imageFile"), async (req, res) => {
+app.post("/api/text/send", async (req, res) => {
   console.log("req!!");
   console.log(req.body);
-  let filePath = req.body.imageData;
+  let filePath = req.body;
   let fileURL = filePath;
-  let file = { sendFile: fileURL };
+  let file = fileURL;
   console.log("으쌰");
   console.log(file);
   res.send(file);
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
+
+////////////////////////////////////////////////////////////////////////////////// 위에는 url간의 데이터 전송, 아래는 이미지 업로드

@@ -4,19 +4,19 @@ import { useNavigate, useParams } from "react-router-dom";
 export default function Text() {
   const navigate = useNavigate();
 
-  const [imageFile, setImageFile] = useState([]);
+  const [textFile, setTextFile] = useState([]);
 
   const handleChange = (e) => {
     const formData = new FormData();
     formData.append("file", e.target.value);
     console.log(e.target.value);
     const nextValue = e.target.value;
-    setImageFile(nextValue);
+    setTextFile(nextValue);
   };
 
-  const uploadImage = async (e) => {
-    const image = {
-      imageData: imageFile,
+  const uploadText = async (e) => {
+    const text = {
+      textData: textFile,
     };
 
     fetch("http://localhost:5000/api/text", {
@@ -25,12 +25,12 @@ export default function Text() {
         "content-type": "application/json",
         "cors-proxy-url": "http://localhost:5000/api/text",
       },
-      body: JSON.stringify(image),
+      body: JSON.stringify(text),
     })
       .then((res) => res.json())
       .then((json) => {
-        console.log(image.imageData);
-        navigate("/api/text/send", { state: image.imageData });
+        console.log(text.textData);
+        navigate("/api/text/send", { state: text.textData });
       });
 
     e.preventDefault();
@@ -38,8 +38,8 @@ export default function Text() {
 
   return (
     <>
-      <form onSubmit={uploadImage} encType="multipart/form-data">
-        <input name="id" type="text" onChange={handleChange} />
+      <form onSubmit={uploadText} encType="multipart/form-data">
+        <input name="datas" type="text" onChange={handleChange} />
         <button type="submit">업로드</button>
       </form>
     </>
